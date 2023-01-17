@@ -1,10 +1,10 @@
 
-const getAll = (id) => {
+const getAll = async(id) => {
     return fetch("http://localhost:3333/articles/"+ id+ "/comments")
     .then((response) => {
         if(response.status === 200){
             return response.json();
-        }else if(response.status ===400){
+        }else if(response.status === 400){
             throw "Not found"
         }
         else{
@@ -20,7 +20,7 @@ const getAll = (id) => {
     })
 }
 
-const addComments = (id,comment_text) => {
+const addComments = async(id,comment_text) => {
     return fetch("http://localhost:3333/articles/"+ id + "/comments",{
         method: "POST",
         headers: {

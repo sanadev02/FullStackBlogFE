@@ -10,10 +10,10 @@ import NotFound from "../views/Components/NotFound.vue"
 const routes = [
      { path: "/", component: Home},
      { path: "/login", component: Login },
-     { path: "/article/:id", comments: Article },
+     { path: "/articles/:id", component: Article },
      { path: "/comments/:id", component: Comment },
-     { path: "/dashboard", component: Dashboard, beforeEnter: ifAuthenticated },
-     { path: "/:pathMatch(.*)*", component: NotFound }
+    // { path: "/dashboard", component: Dashboard, beforeEnter: ifAuthenticated },
+    // { path: "/:pathMatch(.*)*", component: NotFound }
 ]
 
 const router = createRouter({ 

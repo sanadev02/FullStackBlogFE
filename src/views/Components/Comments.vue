@@ -1,8 +1,9 @@
 <template>
     <div>
-      <h2>Comments: </h2>
-    </div>
+      <em v-if="loading">Loading comments...</em>
 
+      <h4>Comments: </h4>
+    
     <div  v-for="(item,index) in comments" :key="index">
       <h4>{{item.name}}</h4>
         {{item.content}} <br/> {{ item.time }}
@@ -10,16 +11,17 @@
       </div>
       <br/> 
       <label>Name: </label> 
-      <input type="text" v-model="newComment.name" />
+      <input type="text" v-model="comments.name" />
       <label> Comment: </label>
-      <textarea type="text" v-model="newComment.content" />
+      <textarea type="text" v-model="comments.content" />
       <br/>
-      <!-- <button @click="handleSubmit">Submit</button> -->
       <button @click="addComment()">Submit</button>
-
+    </div>
 </template>
 
 <script>
+import { commentService } from "../../services/comment.service.js"
+
 export default {   
   data() {
     return {
@@ -38,14 +40,13 @@ export default {
   methods:{
     addComment() {
       this.comments.push({
-        id:this.newComment.CurrentComment,
-       //id:4,
-        name:this.newComment.name, 
-        content:this.newComment.content,
+        id:this.comments.CurrentComment,
+        name:this.comments.name, 
+        content:this.comments.content,
         time:new Date(),
       })
-      this.newComment.name= " "
-      this.newComment.content= " "
+      this.comments.name= " "
+      this.comments.content= " "
      // this.newContent.time= ''
       this.CurrentComment++
     },
@@ -53,5 +54,14 @@ export default {
             this.comments.splice(index,1)
         }
   },
+  mounted() {
+    commentService.getAll(this.$route.params.id)
+      .then((comments)=> {
+        this.comments = comments
+        this.num_comments = comments.length
+      })
+      .catch(error => this.error = error)
+    
+  }
 }
 </script>

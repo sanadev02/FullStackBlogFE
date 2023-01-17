@@ -2,7 +2,6 @@ const getAll = async() => {
     return fetch("http://localhost:3333/articles")
     .then(res => res.json())
     .then(data => {
-        // console.log(data, 'data')
         return data
     })
     .catch((error) => {
@@ -12,6 +11,7 @@ const getAll = async() => {
 }
 
 const getOne = async(id) => {
+    console.log(id,"id is here")
     return fetch("http://localhost:3333/articles/"+id)
     .then((response)=> {
         if(response.status === 200){
