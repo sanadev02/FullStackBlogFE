@@ -1,10 +1,13 @@
 
-const getAll = () => {
-    return fetch("http://localhost:3333/comments")
+const getAll = (id) => {
+    return fetch("http://localhost:3333/articles/"+ id+ "/comments")
     .then((response) => {
         if(response.status === 200){
             return response.json();
-        }else{
+        }else if(response.status ===400){
+            throw "Not found"
+        }
+        else{
             throw "Something went wrong"
         }
     })
@@ -17,12 +20,25 @@ const getAll = () => {
     })
 }
 
-const addComments = () => {
-    return fetch("http://localhost:3333/comments")
+const addComments = (id,comment_text) => {
+    return fetch("http://localhost:3333/articles/"+ id + "/comments",{
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            "comment_text":comment_text
+        })
+    })
     .then((response) => {
         if(response.status === 200){
             return response.json();
-        }else{
+        }else if(response.status ===400){
+            throw "Bad request"
+        }else if(response.status ===401){
+            throw "Not found"
+        }
+        else{
             throw "Something went wrong"
         }
     })

@@ -1,8 +1,8 @@
 const getAll = async() => {
-     fetch("http://localhost:3333/articles")
+    return fetch("http://localhost:3333/articles")
     .then(res => res.json())
     .then(data => {
-        console.log(data, 'data')
+        // console.log(data, 'data')
         return data
     })
     .catch((error) => {
@@ -11,8 +11,8 @@ const getAll = async() => {
     })
 }
 
-const getOne = () => {
-    return fetch("http://localhost:3333/articles/:article_id")
+const getOne = async(id) => {
+    return fetch("http://localhost:3333/articles/"+id)
     .then((response)=> {
         if(response.status === 200){
             return response.json();
@@ -30,6 +30,6 @@ const getOne = () => {
 }
 
 export const articleService = {
-   // getAll,
+    getAll,
     getOne,
 }
