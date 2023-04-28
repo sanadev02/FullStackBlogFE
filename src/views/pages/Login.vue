@@ -1,123 +1,85 @@
 <template>
-    <div>
-        <h1>Login</h1>
-        <em v-if="loading">Loading Login...</em>
+    <div class="vue-template">
 
-        <ul v-if="users">
-            <li v-for="user in users" :key="user.user_id">
-                <!-- <router-link :to="'/login'+ user.user_id"> -->
-                {{ user.email }}
-                {{ user.password }}
-                <!-- </router-link> -->
-            </li>
-        </ul>
+        <form class="login" v-on:submit.prevent="onSubmit">
+            <h3>Sign In</h3>
 
-                
-   <form @submit.prevent="handleSubmit" v-if="users"> 
+            <div class="form-group">
+                <label>Email address</label>
+                <input v-model='email' type="email" class="form-control form-control-lg"
+                    placeholder="email@email.com" />
 
-       <label for="email">Email:</label>
-       <input type="email" name="email" v-model="email" />
-    
-       <br /><br />
-    
-       <label for="password">Password:</label>
-       <input type="password" name="password" v-model="password" />
-    
-       <br /><br />
-        <p>{{email + " " + password}}</p>
-    
-       <button>Login</button>
+                <label>Password</label>
+                <input v-model='password' type="password" class="form-control form-control-lg"
+                    placeholder="Password123!" />
+            </div>
 
-       <div v-if="error">
-           {{ error }}
-       </div>
-   </form>
+            <button type="submit" class="btn btn-dark btn-lg btn-block">Sign In</button>
 
-        <div v-if="error">
-            {{ error }}
-        </div>
+        </form>
     </div>
-
 </template>
-    
 
 <script>
 import { usersService } from "../../services/users.service.js"
-
+import { useRouter } from 'vue-router'
+const route = useRouter()
 export default {
     data() {
         return {
+            result: "",
             email: "",
             password: "",
             submitted: false,
-            loading: true,
             error: ""
         }
     },
     methods: {
-        handleSubmit(e) {
-            this.submitted = true
-            this.error = ""
-            const { email, password } = this
-
-            if (!(email && password)) {
-                return;
-            }
-
-            if (!(EmailValidator.validate(email))) {
-                this.error = "Email must be a valid email."
-                return;
-            }
-
-            const password_pattern = /^(?=(.[a-z]))(?=(.*[A-Z]))/
-            if (!(password_pattern.test(password))) {
-                this.error = "Password not strong enough."
-                return;
-            }
-            alert("Button clicked")
-        },
-
-    },
-    mounted() {
-        // fetch("http://localhost:3333/login",
-        //     {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-type": "application/json"
-        //         },
-        //         body: JSON.stringify({
-        //             "email": email,
-        //             "password": password
-        //         })
-        //     })
-        //     .then((response) => {
-        //         if (response.status === 200) {
-        //             return response.json();
-        //         } else if (response.status === 400) {
-        //             throw "Bad Request"
-        //         } else {
-        //             throw "Something went wrong"
-        //         }
-        //     })
-        //     .then((resJson) => {
-        //         localStorage.setItem("user_id", resJson.user_id);
-        //         localStorage.setItem("session_token", resJson.session_token)
-        //         return resJson
-        //     })
-        //     .catch((error) => {
-        //         console.log("Err", error)
-        //         return Promise.reject(error)
-        //     }),
-
-            usersService.login(email, password)
+        onSubmit() {
+            usersService.login(this.email, this.password)
                 .then(result => {
                     console.log("Auth - go to dash")
-                    this.$router.push("/dashboard")
+                    this.$router.push("/dashboard")                   
+
                 })
                 .catch(error => {
                     this.error = error;
                     this.loading = false;
                 })
-    }
+
+        }
+    },
+
 }
 </script>
+
+<style>
+page {
+    margin: 0%;
+}
+
+#login {
+    text-align: left;
+    color: rgb(0, 0, 0);
+    font-family: monospace;
+    font-size: 12pt;
+    margin: 0;
+    width: 65%;
+    float: inline-start;
+    height: auto;
+}
+
+textarea {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0%;
+}
+
+button {
+    font-family: monospace;
+    font-size: 12pt;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 1%;
+}
+</style>

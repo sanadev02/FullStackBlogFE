@@ -3,11 +3,11 @@ return fetch("http://localhost:3333/login",
 {
     method: "POST",
     headers: {
-        "Content-type": "application/json"
+        "Content-Type": "application/json"
     },
     body: JSON.stringify({
-        "email": email,
-        "password": password
+        email: email,
+        password: password
     })
 })
 .then((response)=> {
@@ -20,6 +20,7 @@ return fetch("http://localhost:3333/login",
     }
 })
 .then((resJson)=> {
+    console.log(resJson,'vj')
     localStorage.setItem("user_id",resJson.user_id);
     localStorage.setItem("session_token",resJson.session_token)
     return resJson
@@ -56,17 +57,17 @@ const logout = async()=> {
     })
 }
 
-const ifAuthenticated =async(to, from, next)=> {
+const ifAuthenticated = (to,from,next) => {
     const loggedIn = localStorage.getItem('session_token');
     if(loggedIn){
-        next()
-        return
+      next()
+      return
     }
     next('/login')
-}
+  }
 
 export const usersService = {
     login,
     logout,
-    ifAuthenticated
+    ifAuthenticated,
 }
